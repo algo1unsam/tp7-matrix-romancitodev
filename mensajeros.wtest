@@ -1,3 +1,5 @@
+// mensajeros.wtest
+// mensajeros.wtest
 import mensajeros.*
 
 describe "Test de mensajeros primera parte " {
@@ -44,16 +46,26 @@ describe "Test de mensajeros primera parte " {
 	test "un paquete pago con destino a Alsina puede ser entregado por Morfeo en camion liviano" {
 		paquete.pagar()
 		paquete.destino(puente)
+		
+		morfeo.agregarDestino(puente)
+		
 		assert.that(paquete.puedeSerEntregadoPor(morfeo))
 	}
 	
 	test "un paquete no pago no puede ser entregado por Morfeo" {
+		paquete.destino(puente)
+		morfeo.agregarDestino(puente)
+		
 		assert.notThat(paquete.puedeSerEntregadoPor(morfeo))
 	}
 	
 	test "un paquete pago no puede entregado por Morfeo en camion de 3 acoplados" {
-		paquete.pagar()
 		camion.acoplados(3)
+		morfeo.transporte(camion)
+		paquete.pagar()
+		paquete.destino(puente)
+		
+		morfeo.agregarDestino(puente)
 		assert.notThat(paquete.puedeSerEntregadoPor(morfeo))
 	}
 }
