@@ -1,5 +1,8 @@
 // mensajeros.wtest
 // mensajeros.wtest
+// mensajeros.wtest
+// mensajeros.wtest
+// mensajeros.wtest
 import mensajeros.*
 
 describe "Test de mensajeros primera parte " {
@@ -39,11 +42,13 @@ describe "Test de mensajeros primera parte " {
 	}
 	
 	test "un paquete estaPago" {
+		const paquete = new Paquete()
 		paquete.pago(true)
 		assert.that(paquete.estaPago())
 	}
 	
 	test "un paquete pago con destino a Alsina puede ser entregado por Morfeo en camion liviano" {
+		const paquete = new Paquete()
 		paquete.pagar()
 		paquete.destino(puente)
 		
@@ -53,6 +58,7 @@ describe "Test de mensajeros primera parte " {
 	}
 	
 	test "un paquete no pago no puede ser entregado por Morfeo" {
+		const paquete = new Paquete()
 		paquete.destino(puente)
 		morfeo.agregarDestino(puente)
 		
@@ -60,6 +66,7 @@ describe "Test de mensajeros primera parte " {
 	}
 	
 	test "un paquete pago no puede entregado por Morfeo en camion de 3 acoplados" {
+		const paquete = new Paquete()
 		camion.acoplados(3)
 		morfeo.transporte(camion)
 		paquete.pagar()

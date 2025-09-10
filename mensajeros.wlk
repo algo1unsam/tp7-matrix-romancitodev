@@ -57,8 +57,9 @@ object puente {
   method dejarPasar(persona) = persona.peso() < 1000
 }
 
-object paquete {
+class Paquete {
   var property peso = 0
+  var property precio = 0
   var property pago = false
   var property destino = null
   
@@ -72,42 +73,5 @@ object paquete {
     mensajero
   ) = (pago && mensajero.destinos().contains(destino)) && destino.dejarPasar(
     mensajero
-  )
-}
-
-object paquetito {
-  var property peso = 0
-  const property pago = true
-  var property destino = null
-  
-  method estaPago() = pago
-  
-  method pagar() {
-    
-  }
-  
-  method puedeSerEntregadoPor(
-    mensajero
-  ) = pago && (mensajero.destino() == destino)
-}
-
-object paqueton {
-  const property destinos = #{}
-  var property peso = 0
-  var property pago = false
-  var property precio = 50
-  
-  method estaPago() = precio <= 0
-  
-  method pagar() {
-    pago = true
-  }
-  
-  method pagar(valor) {
-    precio -= valor
-  }
-  
-  method puedeSerEntregadoPor(mensajero) = pago && destinos.contains(
-    mensajero.destino()
   )
 }

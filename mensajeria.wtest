@@ -1,8 +1,18 @@
 // mensajeria.wtest
+// mensajeria.wtest
+// mensajeria.wtest
+// mensajeria.wtest
+// mensajeria.wtest
+// mensajeria.wtest
+// mensajeria.wtest
+// mensajeria.wtest
+// mensajeria.wtest
+// mensajeria.wtest
+// mensajeria.wtest
 import mensajeria.*
 import mensajeros.*
 
-describe "estado mensajeros " {
+describe "The Matrix Has You" {
   test "contratar mensajero" {
     mensajeria.contratar(morfeo)
     assert.that(mensajeria.mensajeros().contains(morfeo))
@@ -30,12 +40,13 @@ describe "estado mensajeros " {
   }
   
   test "puede ser entregado por el primer empleado" {
+    const paquete = new Paquete()
     paquete.pagar()
     paquete.destino(puente)
     mensajeria.contratar(neo)
     mensajeria.contratar(morfeo)
     mensajeria.contratar(trinity)
-    assert.that(mensajeria.primerEmpleadoPuedeEntregar())
+    assert.that(mensajeria.primerEmpleadoPuedeEntregar(paquete))
   }
   
   test "Peso del ultimo empleado" {
@@ -51,6 +62,109 @@ describe "estado mensajeros " {
   }
 }
 
-describe "3 " {
+describe "Matrix Reloaded Tests" {
+  test "Un paquete puede ser entregado por la empresa" {
+    const paquete = new Paquete()
+    paquete.pagar()
+    paquete.destino(puente)
+    mensajeria.contratar(morfeo)
+    morfeo.agregarDestino(puente)
+    mensajeria.contratar(trinity)
+    assert.that(mensajeria.puedeEntregar(paquete))
+  }
   
+  test "Obtener todos los mensajeros que pueden llevar un paquete" {
+    const paquete = new Paquete()
+    paquete.pagar()
+    paquete.destino(puente)
+    mensajeria.contratar(morfeo)
+    morfeo.agregarDestino(puente)
+    mensajeria.contratar(trinity)
+    trinity.agregarDestino(puente)
+    trinity.transporte(monopatin)
+    assert.equals(
+      #{morfeo, trinity},
+      // Trinity puede porque esta en un monopatin y su peso: 900 + 1 le permite pasar el puente
+      mensajeria.mensajerosQuePuedenEntregar(paquete)
+    )
+  }
+  
+  test "Mensajería con sobrepeso" {
+    mensajeria.contratar(morfeo)
+    mensajeria.contratar(trinity)
+    morfeo.transporte(camion)
+    camion.acoplados(10)
+    assert.that(mensajeria.tieneSobrepeso())
+  }
+  
+  test "Enviar un paquete" {
+    const paquete = new Paquete()
+    paquete.pagar()
+    paquete.destino(puente)
+    mensajeria.contratar(morfeo)
+    morfeo.agregarDestino(puente)
+    mensajeria.enviar(paquete)
+    assert.that(mensajeria.paquetesEnviados().contains(paquete))
+  }
+  
+  test "No se puede enviar un paquete" {
+    const paquete = new Paquete()
+    paquete.pagar()
+    paquete.destino(puente)
+    mensajeria.contratar(morfeo)
+    camion.acoplados(3)
+    morfeo.agregarDestino(puente)
+    mensajeria.enviar(paquete)
+    assert.notThat(mensajeria.paquetesEnviados().contains(paquete))
+    assert.that(mensajeria.paquetesPendientes().contains(paquete))
+  }
+  
+  test "Facturación de la empresa" {
+    const paquete = new Paquete()
+    paquete.pagar()
+    paquete.destino(puente)
+    paquete.precio(100)
+    mensajeria.contratar(morfeo)
+    morfeo.agregarDestino(puente)
+    mensajeria.enviar(paquete)
+    assert.equals(100, mensajeria.facturacion())
+  }
+  
+  test "Enviar todos los paquetes" {
+    const paquete1 = new Paquete()
+    paquete1.pagar()
+    paquete1.destino(puente)
+    const paquete2 = new Paquete()
+    paquete2.pagar()
+    paquete2.destino(puente)
+    mensajeria.contratar(morfeo)
+    mensajeria.contratar(neo)
+    camion.acoplados(3)
+    morfeo.agregarDestino(puente)
+    neo.agregarDestino(puente)
+    neo.transporte(monopatin)
+    mensajeria.enviarTodos([paquete1, paquete2])
+    assert.that(mensajeria.paquetesEnviados().contains(paquete1))
+    assert.that(mensajeria.paquetesEnviados().contains(paquete2))
+  }
+  
+  test "Enviar el paquete pendiente más caro" {
+    const paquete1 = new Paquete()
+    paquete1.pagar()
+    paquete1.destino(puente)
+    paquete1.precio(200)
+    const paquete2 = new Paquete()
+    paquete2.pagar()
+    paquete2.destino(puente)
+    paquete2.precio(100)
+    mensajeria.contratar(morfeo)
+    
+    morfeo.agregarDestino(puente)
+    
+    mensajeria.agregarPendiente(paquete1)
+    mensajeria.agregarPendiente(paquete2)
+    mensajeria.enviarMasCaroPendiente()
+    assert.that(mensajeria.paquetesEnviados().contains(paquete1))
+    assert.notThat(mensajeria.paquetesPendientes().contains(paquete1))
+  }
 }
