@@ -1,8 +1,56 @@
+// mensajeria.wtest
 import mensajeria.*
 import mensajeros.*
 
+describe "estado mensajeros " {
+  test "contratar mensajero" {
+    mensajeria.contratar(morfeo)
+    assert.that(mensajeria.mensajeros().contains(morfeo))
+  }
+  
+  test "despedir mensajero" {
+    mensajeria.contratar(morfeo)
+    mensajeria.despedir(morfeo)
+    assert.that(mensajeria.mensajeros().isEmpty())
+  }
+  
+  test "despedir todos los mensajeros" {
+    mensajeria.contratar(morfeo)
+    mensajeria.contratar(neo)
+    mensajeria.contratar(trinity)
+    mensajeria.despedirATodos()
+    assert.that(mensajeria.mensajeros().isEmpty())
+  }
+  
+  test "ver si es hay mas de 2 mensajeros" {
+    mensajeria.contratar(morfeo)
+    mensajeria.contratar(neo)
+    mensajeria.contratar(trinity)
+    assert.that(mensajeria.mensajeros().size() > 2)
+  }
+  
+  test "puede ser entregado por el primer empleado" {
+    paquete.pagar()
+    paquete.destino(puente)
+    mensajeria.contratar(neo)
+    mensajeria.contratar(morfeo)
+    mensajeria.contratar(trinity)
+    assert.that(mensajeria.primerEmpleadoPuedeEntregar())
+  }
+  
+  test "Peso del ultimo empleado" {
+    mensajeria.contratar(trinity)
+    mensajeria.contratar(morfeo)
+    
+    morfeo.transporte(camion)
+    camion.acoplados(10)
+    
+    assert.equals(5000, camion.peso())
+    
+    assert.that(mensajeria.pesoDelUltimoEmpleado() == morfeo.peso())
+  }
+}
 
-describe "2 " {}
-
-
-describe "3 " {}
+describe "3 " {
+  
+}
